@@ -22,7 +22,8 @@ cd segment-anything; pip install -e .
 
 ```
 
-# Если нет ffmpeg, для Ubuntu его нужно собрать (https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu)
+Если нет ffmpeg, для Ubuntu его нужно собрать (https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu)
+
 ```bash
 utils/ffmpeg_install.sh
 ```
