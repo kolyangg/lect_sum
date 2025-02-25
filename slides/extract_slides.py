@@ -6,6 +6,7 @@ from PIL import Image
 import random
 from collections import defaultdict
 import warnings
+import argparse
 
 def load_nanodet_model():
     """
@@ -544,15 +545,23 @@ def process_video(video_path, output_folder, frame_files_file, frame_interval=1,
 
 def main(video, output_folder, frame_files_file):
     
-    warnings.filterwarnings("ignore", category=FutureWarning)       
+    warnings.filterwarnings("ignore", category=FutureWarning)  
+    print(f"Processing video: {video}")
+    print(f"Output folder: {output_folder}")
+    print(f"Frame files file: {frame_files_file}")     
 
     process_video(video, output_folder, frame_files_file, frame_interval=1, min_diff=2.5, num_workers = 1, debug_print = False) # min_diff = 10 default
     
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Extract slides from a video.")
+    parser.add_argument("-v", "--video", type=str, required=True,
+                        help="Path to the input video file.")
+    parser.add_argument("-o", "--output_folder", type=str, required=True,
+                        help="Directory to store output frames.")
+    parser.add_argument("-f", "--frame_files_file", type=str, required=True,
+                        help="Filename for the text file listing frame files.")
     
-    video = "test_video.webm"
-    output_folder = "output_folder"
-    frame_files_file = "frame_files.txt"
+    args = parser.parse_args()
     
-    main(video, output_folder, frame_files_file)
+    main(args.video, args.output_folder, args.frame_files_file)
