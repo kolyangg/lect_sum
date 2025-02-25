@@ -41,4 +41,6 @@ ffmpeg -i "testing_video.mkv" -c:v libvpx-vp9 -b:v 500k -vf "scale=1280:720" -c:
 ```
 
 ## 3. Извлечение кадров слайдов из видео
-
+```bash
+python3 slides/extract_slides.py -v testing_video.webm -o _output_slides -f frame_files.txt
+```
