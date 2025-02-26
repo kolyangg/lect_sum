@@ -29,7 +29,7 @@ utils/ffmpeg_install.sh
 ```
 
 
-## 2. Скачивание и подготовка данных
+## 2A. Скачивание и подготовка данных
 ### Пример YT video
 ```bash
 yt-dlp https://www.youtube.com/watch?v=CSFjlhr_cz0
@@ -40,7 +40,30 @@ ffmpeg -i "testing_video.mkv" -c:v libvpx-vp9 -b:v 500k -vf "scale=1280:720" -c:
 
 ```
 
+## 2B. Скачивание готового YT video
+### Пример YT video
+```bash
+python3 utils/video_dl.py https://drive.google.com/file/d/1W6eXoNTQ8gC78327MphUugjhg1KDC16m/view?usp=sharing
+```
+
+
+
 ## 3. Извлечение кадров слайдов из видео
 ```bash
-python3 slides/extract_slides.py -v testing_video.webm -o _output_slides -f frame_files.txt
+python3 slides/extract_slides.py -v testing_video_manual.webm -o _output_slides -f frame_files.txt
 ```
+
+## 4. Извлечение аудиодорожки и транскрибация аудио
+
+# create audio track
+```bash
+ffmpeg -i testing_video_manual.webm -vn -acodec pcm_s16le -ar 16000 -ac 1 testing_video_manual.wav
+```
+
+## 5. Транскрибация аудио
+```bash
+python3 ASR/simple_asr.py --input_file testing_video_manual.wav --return_timestamps 0  --output_file transcription.txt --batch_size 1 --cpu_cores 1
+```
+
+
+
