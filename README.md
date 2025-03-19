@@ -29,41 +29,21 @@ utils/ffmpeg_install.sh
 ```
 
 
-## 2A. Скачивание и подготовка данных
-### Пример YT video
+## 2. Run OCR on book chapter and save as md file (optional)
+
 ```bash
-yt-dlp https://www.youtube.com/watch?v=CSFjlhr_cz0
-mv "05. LLM Validation (04.02.25) [CSFjlhr_cz0].mkv" "testing_video.mkv"
-# ffmpeg -hwaccel cuda -i "testing_video.mkv" -c:v libvpx-vp9 -b:v 500k -vf "scale=1280:720" -c:a aac -b:a 64k "testing_video.webm"
-ffmpeg -i "testing_video.mkv" -c:v libvpx-vp9 -b:v 500k -vf "scale=1280:720" -c:a libvorbus -b:a 64k "testing_video.webm"
-
-
-```
-
-## 2B. Скачивание готового YT video
-### Пример YT video
-```bash
-python3 utils/video_dl.py https://drive.google.com/file/d/1W6eXoNTQ8gC78327MphUugjhg1KDC16m/view?usp=sharing
+python3 vlm/mistral_ocr.py --pdf_file _pdf/RL_ch2.pdf --output _book/RL_ch2.md
 ```
 
 
+## 3. Run main Streamlit app (lecture summary)
 
-## 3. Извлечение кадров слайдов из видео
 ```bash
-python3 slides/extract_slides.py -v testing_video_manual.webm -o _output_slides -f frame_files.txt
+streamlit run app.py
 ```
 
-## 4. Извлечение аудиодорожки и транскрибация аудио
+## 4. Run a RAG app - upload a pdf or MD created with Mistral (better)
 
-# create audio track
 ```bash
-ffmpeg -i testing_video_manual.webm -vn -acodec pcm_s16le -ar 16000 -ac 1 testing_video_manual.wav
+streamlit run rag/rag_prod2.py -- --terms_list temp/terms.txt
 ```
-
-## 5. Транскрибация аудио
-```bash
-python3 ASR/simple_asr.py --input_file testing_video_manual.wav --return_timestamps 0  --output_file transcription.txt --batch_size 1 --cpu_cores 1
-```
-
-
-

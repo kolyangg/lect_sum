@@ -198,3 +198,27 @@ _other/
 _vid/
 # _output_slides/
 _pdf/
+
+
+# new additions
+vllm/
+output_mds/
+output_txt/
+*.zip
+_faiss_cache/
+_faiss_index/
+rag/_draft/
+rag/_old/
+_RL_slides_mds/
+_output_slides_RL/
+_output_slides_RL2/
+_output_slides/
+output/_old/
+slides/_old/
+vlm/_old/
+_temp_data/
+temp/_old/
+
+# book
+_book/
+_book_full/
