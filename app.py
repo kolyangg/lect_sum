@@ -203,7 +203,7 @@ if st.button("Step 10: Group notes for same slides"):
 # Step 11: Summarize the lecture
 if st.button("Step 11: Summarize lecture notes"):
     cmd_cleanup = (
-        'python3 rag/json_summ.py --api --final_json temp/RL_json1.json --system_prompt rag/summ_prompt.txt --json_structured temp/RL_json1_str2.json'
+        'python3 rag/json_summ2.py --api --final_json temp/RL_json1.json --system_prompt rag/summ_prompt.txt --json_structured temp/RL_json1_str2.json'
     )
     st.info("Summarizing notes...")
     run_command(cmd_cleanup)
@@ -223,7 +223,7 @@ if st.button("Step 12: Fix LATEX in formulas"):
 # Step 13: Create a list of terms for RAG
 if st.button("Step 13: Create a list of terms for RAG"):
     cmd_notes = (
-        'python3 notes_txt.py --json_structured temp/RL_json1_str3.json --output temp/notes.txt'
+        'python3 rag/notes_txt.py --json_structured temp/RL_json1_str3.json --output temp/notes.txt'
     )
     st.info("Saving notes as text...")
     run_command(cmd_notes)

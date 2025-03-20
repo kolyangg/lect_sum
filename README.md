@@ -16,11 +16,14 @@ conda env create -f environment.yml
 
 ```
 
+Нужно добавить ключи для Mistral и OpenRouter (https://pulsarchat.com/docs/2-tutorial-on-how-to-get-an-openrouter-api-key)
+
 ```bash
-git clone git@github.com:facebookresearch/segment-anything.git
-cd segment-anything; pip install -e .
+export OPENROUTER_API_KEY = XXX
+export MISTRAL_API_KEY = XXX
 
 ```
+
 
 Если нет ffmpeg, для Ubuntu его нужно собрать (https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu)
 
@@ -28,8 +31,11 @@ cd segment-anything; pip install -e .
 utils/ffmpeg_install.sh
 ```
 
+Нужно добавить API ключи для Mistal и 
 
-## 2. Run OCR on book chapter and save as md file (optional)
+
+
+## 2. Run OCR on book chapter and save as md file (optional) - e.g. full RL book in _data/RL_book_full.md
 
 ```bash
 python3 vlm/mistral_ocr.py --pdf_file _pdf/RL_ch2.pdf --output _book/RL_ch2.md
