@@ -203,7 +203,8 @@ if st.button("Step 10: Group notes for same slides"):
 # Step 11: Summarize the lecture
 if st.button("Step 11: Summarize lecture notes"):
     cmd_cleanup = (
-        'python3 rag/json_summ2.py --api --final_json temp/RL_json1.json --system_prompt rag/summ_prompt.txt --json_structured temp/RL_json1_str2.json'
+        # 'python3 rag/json_summ2.py --api --final_json temp/RL_json1.json --system_prompt rag/summ_prompt.txt --json_structured temp/RL_json1_str2.json'
+        'python3 rag/json_summ3.py --api --final_json temp/RL_json1.json --system_prompt rag/summ_prompt.txt --json_structured temp/RL_json1_str2try.json'
     )
     st.info("Summarizing notes...")
     run_command(cmd_cleanup)
@@ -213,7 +214,8 @@ if st.button("Step 11: Summarize lecture notes"):
 # Step 12: Fix LATEX in formulas
 if st.button("Step 12: Fix LATEX in formulas"):
     cmd_latex = (
-        'python3 output/fix_latex.py --input_json temp/RL_json1_str2.json --output_json temp/RL_json1_str3.json'
+        # 'python3 output/fix_latex.py --input_json temp/RL_json1_str2.json --output_json temp/RL_json1_str3.json'
+        'python3 output/fix_latex.py --input_json temp/RL_json1_str2try.json --output_json temp/RL_json1_str2try.json'
     )
     st.info("Cleaning LATEX...")
     run_command(cmd_latex)
@@ -242,7 +244,8 @@ if st.button("Step 13: Create a list of terms for RAG"):
 # Step 14: Create Markdown output and display it
 if st.button("Step 14: Create Markdown Output"):
     cmd_create_md = (
-        f'python3 output/create_md_only.py --json_file temp/RL_json1_str3.json --images_folder temp/temp_slides2 --output_md temp/RL_md_str.md '
+        # f'python3 output/create_md_only.py --json_file temp/RL_json1_str3.json --images_folder temp/temp_slides2 --output_md temp/RL_md_str.md '
+        f'python3 output/create_md_only.py --json_file temp/RL_json1_str2try.json --images_folder temp/temp_slides2 --output_md temp/RL_md_str.md '
         f'--unique_img_file temp/unique_img_RL.txt'
     )
 
