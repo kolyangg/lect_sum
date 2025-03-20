@@ -219,6 +219,7 @@ vlm/_old/
 _temp_data/
 temp/_old/
 ASR/_old/
+_output_slides/
 
 # book
 _book/
