@@ -1,5 +1,5 @@
-# Speech enhancement
-Репозиторий с проектом по теме Youtube / Video lecture summarize
+# YT lecture summarizer
+Репозиторий с проектом по теме Youtube / Video lecture summarizer
 
 
  
@@ -16,7 +16,7 @@ conda env create -f environment.yml
 
 ```
 
-Нужно добавить ключи для Mistral и OpenRouter (https://pulsarchat.com/docs/2-tutorial-on-how-to-get-an-openrouter-api-key)
+Нужно добавить API ключи для Mistral и OpenRouter (https://pulsarchat.com/docs/2-tutorial-on-how-to-get-an-openrouter-api-key)
 
 ```bash
 export OPENROUTER_API_KEY = XXX
@@ -30,8 +30,6 @@ export MISTRAL_API_KEY = XXX
 ```bash
 utils/ffmpeg_install.sh
 ```
-
-Нужно добавить API ключи для Mistal и 
 
 
 
