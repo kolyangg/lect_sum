@@ -204,7 +204,7 @@ if st.button("Step 10: Group notes for same slides"):
 if st.button("Step 11: Summarize lecture notes"):
     cmd_cleanup = (
         # 'python3 rag/json_summ2.py --api --final_json temp/RL_json1.json --system_prompt rag/summ_prompt.txt --json_structured temp/RL_json1_str2.json'
-        'python3 rag/json_summ3.py --api --final_json temp/RL_json1.json --system_prompt rag/summ_prompt.txt --json_structured temp/RL_json1_str2try.json'
+        'python3 rag/json_summ3try.py --api --final_json temp/RL_json1.json --system_prompt rag/summ_prompt.txt --json_structured temp/RL_json1_str2try.json'
     )
     st.info("Summarizing notes...")
     run_command(cmd_cleanup)
