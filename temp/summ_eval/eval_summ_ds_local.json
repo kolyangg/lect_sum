@@ -1,0 +1,118 @@
+{
+  "processed_frame_014825.jpg": {
+    "similarity_1": 0.75,
+    "similarity_2": 0.65
+  },
+  "processed_frame_016150.jpg": {
+    "similarity_1": 0.7,
+    "similarity_2": 0.4
+  },
+  "processed_frame_019925.jpg": {
+    "similarity_1": 0.6,
+    "similarity_2": 0.3
+  },
+  "processed_frame_021700.jpg": {
+    "similarity_1": 0.65,
+    "similarity_2": 0.9
+  },
+  "processed_frame_027775.jpg": {
+    "similarity_1": 0.0,
+    "similarity_2": 0.0
+  },
+  "processed_frame_029250.jpg": {
+    "similarity_1": 0.2,
+    "similarity_2": 0.1
+  },
+  "processed_frame_032875.jpg": {
+    "similarity_1": 0.7,
+    "similarity_2": 0.85
+  },
+  "processed_frame_041500.jpg": {
+    "similarity_1": 0.7,
+    "similarity_2": 0.85
+  },
+  "processed_frame_046350.jpg": {
+    "similarity_1": 0.5,
+    "similarity_2": 0.3
+  },
+  "processed_frame_049350.jpg": {
+    "similarity_1": 0.55,
+    "similarity_2": 0.35
+  },
+  "processed_frame_053350.jpg": {
+    "similarity_1": 0.55,
+    "similarity_2": 0.35
+  },
+  "processed_frame_054075.jpg": {
+    "similarity_1": 0.55,
+    "similarity_2": 0.35
+  },
+  "processed_frame_064000.jpg": {
+    "similarity_1": 0.6,
+    "similarity_2": 0.9
+  },
+  "processed_frame_066600.jpg": {
+    "similarity_1": 0.0,
+    "similarity_2": 0.0
+  },
+  "processed_frame_068925.jpg": {
+    "similarity_1": 0.7,
+    "similarity_2": 0.8
+  },
+  "processed_frame_070275.jpg": {
+    "similarity_1": 0.7,
+    "similarity_2": 0.6
+  },
+  "processed_frame_071600.jpg": {
+    "similarity_1": 0.65,
+    "similarity_2": 0.55
+  },
+  "processed_frame_081925.jpg": {
+    "similarity_1": 0.65,
+    "similarity_2": 0.55
+  },
+  "processed_frame_087125.jpg": {
+    "similarity_1": 0.65,
+    "similarity_2": 0.5
+  },
+  "processed_frame_091875.jpg": {
+    "similarity_1": 0.6,
+    "similarity_2": 0.3
+  },
+  "processed_frame_094325.jpg": {
+    "similarity_1": 0.5,
+    "similarity_2": 0.2
+  },
+  "processed_frame_096500.jpg": {
+    "similarity_1": 0.7,
+    "similarity_2": 0.4
+  },
+  "processed_frame_100800.jpg": {
+    "similarity_1": 0.8,
+    "similarity_2": 1.0
+  },
+  "processed_frame_104325.jpg": {
+    "similarity_1": 0.7,
+    "similarity_2": 0.8
+  },
+  "processed_frame_107825.jpg": {
+    "similarity_1": 0.65,
+    "similarity_2": 0.8
+  },
+  "processed_frame_112025.jpg": {
+    "similarity_1": 0.65,
+    "similarity_2": 0.8
+  },
+  "processed_frame_115925.jpg": {
+    "similarity_1": 0.5,
+    "similarity_2": 0.8
+  },
+  "processed_frame_127525.jpg": {
+    "similarity_1": 0.7,
+    "similarity_2": 0.85
+  },
+  "processed_frame_134100.jpg": {
+    "similarity_1": 0.6,
+    "similarity_2": 0.8
+  }
+}

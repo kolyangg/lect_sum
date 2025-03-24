@@ -7,7 +7,6 @@ import pickle
 import hashlib
 from langchain_community.document_loaders import PDFPlumberLoader, UnstructuredMarkdownLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_ollama import OllamaEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama.llms import OllamaLLM
@@ -17,7 +16,6 @@ from nltk.tokenize import word_tokenize
 import nltk
 from tqdm import tqdm
 
-# Ensure nltk tokenizer is available
 nltk.download("punkt")
 
 # Directories for caching FAISS index and temporary files
@@ -28,7 +26,7 @@ os.makedirs(DATA_DIRECTORY, exist_ok=True)
 
 # Model names and API details
 LOCAL_MODEL_NAME = "hf.co/bartowski/DeepSeek-R1-Distill-Qwen-14B-GGUF:Q6_K_L"
-API_MODEL_NAME = "deepseek/deepseek-r1:free"
+API_MODEL_NAME = "deepseek/deepseek-r1"
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
@@ -52,7 +50,6 @@ def extract_final_answer(answer):
     if marker in answer:
         parts = answer.split(marker, 1)
         final_answer = parts[1].strip()
-        # Remove a leading colon if present.
         if final_answer.startswith(":"):
             final_answer = final_answer[1:].strip()
         return final_answer
@@ -106,13 +103,12 @@ def load_documents(file_path):
         print("[ERROR] Unsupported file format.")
         return []
 
-def build_cached_faiss_retriever(documents, file_hash, use_cache=True):
+def build_cached_faiss_retriever(documents, file_hash, embeddings, use_cache=True):
     """
     Build (or load cached) FAISS embeddings and return a retriever.
     """
     faiss_index_path = os.path.join(FAISS_DB_PATH, f"{file_hash}.faiss")
     docstore_path = os.path.join(FAISS_DB_PATH, f"{file_hash}_docs.pkl")
-    embeddings = OllamaEmbeddings(model=LOCAL_MODEL_NAME)
     if use_cache and os.path.exists(faiss_index_path) and os.path.exists(docstore_path):
         print("[INFO] Loaded cached embeddings from FAISS.")
         vector_store = FAISS.load_local(faiss_index_path, embeddings=embeddings, allow_dangerous_deserialization=True)
@@ -170,57 +166,96 @@ def answer_question_with_api(question, retrieved_docs, template):
     except json.JSONDecodeError:
         return "[Error] Failed to parse API response as JSON."
 
+# If --hf_emb is provided, use HuggingFace embedder instead of OllamaEmbeddings.
+def get_embeddings(use_hf=False):
+    if use_hf:
+        from transformers import AutoTokenizer, AutoModel
+        import torch
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+        class HfEmbeddings:
+            def __init__(self, model_name="BAAI/llm-embedder"):
+                self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+                self.model = AutoModel.from_pretrained(model_name).to(device)
+                self.model.eval()
+
+            def embed_documents(self, documents):
+                embeddings = []
+                with torch.no_grad():
+                    for doc in documents:
+                        inputs = self.tokenizer(doc, return_tensors="pt", truncation=True, max_length=512)
+                        outputs = self.model(**inputs)
+                        token_embeddings = outputs.last_hidden_state.squeeze(0)
+                        embedding = token_embeddings.mean(dim=0)
+                        embeddings.append(embedding.cpu().numpy().tolist())
+                return embeddings
+
+            def __call__(self, text):
+                # Allow the instance to be called like a function.
+                if isinstance(text, list):
+                    return self.embed_documents(text)
+                else:
+                    return self.embed_documents([text])[0]
+
+        print("[INFO] Using HuggingFace embedder.")
+        return HfEmbeddings()
+    else:
+        from langchain_ollama import OllamaEmbeddings
+        print("[INFO] Using OllamaEmbeddings.")
+        return OllamaEmbeddings(model=LOCAL_MODEL_NAME)
+
+
 def main():
     parser = argparse.ArgumentParser(description="Simplified RAG System Script")
     parser.add_argument("--prompt_file", required=True, help="Path to system prompt template text file.")
-    parser.add_argument("--questions_file", required=True, help="Path to JSON file with questions (dict of key: question).")
+    parser.add_argument("--questions_file", required=True, help="Path to JSON file with questions in new structure (each key maps to an object with 'question' and 'answer').")
     parser.add_argument("--context_file", required=True, help="Path to context file (Markdown or PDF).")
     parser.add_argument("--output_file", required=True, help="Path to output JSON file with answers.")
     parser.add_argument("--use_api", action="store_true", help="Use OpenRouter API instead of local model.")
     parser.add_argument("--use_cache", action="store_true", help="Use cached embeddings if available.")
+    parser.add_argument("--bm25_weight", type=float, default=0.5, help="Weight for BM25 retriever; semantic retriever weight will be (1 - bm25_weight).")
+    parser.add_argument("--hf_emb", action="store_true", help="Use HuggingFace embedder instead of current embedder.")
     args = parser.parse_args()
 
-    # Load system prompt template from the text file.
     with open(args.prompt_file, "r", encoding="utf-8") as f:
         template = f.read().strip()
     print("[INFO] Loaded system prompt template.")
 
-    # Load questions dictionary from the JSON file.
     with open(args.questions_file, "r", encoding="utf-8") as f:
         questions_dict = json.load(f)
     print(f"[INFO] Loaded {len(questions_dict)} questions.")
 
-    # Load and split the context file.
     documents = load_documents(args.context_file)
     if not documents:
         print("[ERROR] No documents loaded. Exiting.")
         return
 
-    # Build retrievers.
     file_hash = hash_file(args.context_file)
-    semantic_retriever = build_cached_faiss_retriever(documents, file_hash, use_cache=args.use_cache)
+    embeddings = get_embeddings(use_hf=args.hf_emb)
+    semantic_retriever = build_cached_faiss_retriever(documents, file_hash, embeddings, use_cache=args.use_cache)
     bm25_retriever = build_bm25_retriever(documents)
+    # Set retriever weights: semantic weight = (1 - bm25_weight), bm25 weight = bm25_weight.
     hybrid_retriever = EnsembleRetriever(
         retrievers=[semantic_retriever, bm25_retriever],
-        weights=[0.5, 0.5]
+        weights=[1 - args.bm25_weight, args.bm25_weight]
     )
 
     results = {}
-    # Process each question with a progress bar.
-    for key, question in tqdm(questions_dict.items(), desc="Processing questions", total=len(questions_dict)):
-        retrieved_docs = hybrid_retriever.invoke(question)
+    for key, q_obj in tqdm(questions_dict.items(), desc="Processing questions", total=len(questions_dict)):
+        question_text = q_obj.get("question", "")
+        retrieved_docs = hybrid_retriever.invoke(question_text)
         if args.use_api:
             if not OPENROUTER_API_KEY:
                 print("[ERROR] OPENROUTER_API_KEY not set. Exiting.")
                 return
-            answer = answer_question_with_api(question, retrieved_docs, template)
+            answer = answer_question_with_api(question_text, retrieved_docs, template)
         else:
-            answer = answer_question_with_ollama(question, retrieved_docs, template)
+            answer = answer_question_with_ollama(question_text, retrieved_docs, template)
         answer = fix_formulas(answer)
         answer = extract_final_answer(answer)
-        results[key] = answer
+        print(f"[INFO] Key: {key}, Generated Answer: {answer}, Correct Answer: {q_obj.get('answer', None)}")
+        results[key] = {"generated_answer": answer, "correct_answer": q_obj.get("answer", None)}
 
-    # Save the answers in a JSON file with the same keys.
     with open(args.output_file, "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False, indent=2)
     print(f"[INFO] Saved answers to {args.output_file}")

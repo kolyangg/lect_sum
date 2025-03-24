@@ -225,3 +225,9 @@ _output_slides/
 _book/
 _book_full/
 _old_media/
+
+temp/_eval_details
+temp/_rag_eval_details
+.deepeval_telemetry.txt
+eval/_old
+eval/_testing

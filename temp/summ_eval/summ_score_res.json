@@ -1,0 +1,18 @@
+{
+  "eval_summ_ds_api.json": {
+    "average_similarity_1": 0.8196551724137933,
+    "average_similarity_2": 0.7682758620689655
+  },
+  "eval_summ_ds_local.json": {
+    "average_similarity_1": 0.5793103448275863,
+    "average_similarity_2": 0.553448275862069
+  },
+  "eval_summ_mistral.json": {
+    "average_similarity_1": 0.7931034482758623,
+    "average_similarity_2": 0.9510344827586207
+  },
+  "eval_summ_qwen.json": {
+    "average_similarity_1": 0.5896551724137933,
+    "average_similarity_2": 0.8013793103448276
+  }
+}

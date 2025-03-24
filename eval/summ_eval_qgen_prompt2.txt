@@ -1,0 +1,27 @@
+I will send you a transcript of a lecture. Based on it, generate three multiple-choice questions in Russian that focus on very specific details mentioned in the lecture (e.g., a specific example, a number quoted, or any detail unique to the lecture). For each question, provide exactly four answer options labeled as а, б, в, г.
+
+Output Requirements:
+
+Provide your answer in valid JSON format with three top-level keys: "1", "2", and "3".
+Each key should map to an object containing two sub-keys:
+"question": a string that includes the full question text along with its four answer options (you may use line breaks to separate the options).
+"answer": a string with just one letter (а, б, в, or г) representing the correct answer.
+Do not include any extra commentary or text outside the JSON.
+Example output structure:
+
+json
+Copy
+{
+  "1": {
+    "question": "Какая оптимальная награда упоминается в примере с лабиринтом?\nа) -5\nб) -10\nв) -13\nг) -20",
+    "answer": "в"
+  },
+  "2": {
+    "question": "Что используется в качестве примера среды с обрывами и штрафом за шаг?\nа) Дерево решений\nб) Гридворлд\nв) Лабиринт\nг) Шахматная доска",
+    "answer": "в"
+  },
+  "3": {
+    "question": "Почему SARSA сходится к безопасной политике согласно контексту?\nа) Из-за использования нейронной сети\nб) Из-за отвращения к риску\nв) Из-за детерминированных действий\nг) Из-за максимальной энтропии",
+    "answer": "б"
+  }
+}

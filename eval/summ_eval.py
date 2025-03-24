@@ -9,7 +9,8 @@ from langchain_ollama.llms import OllamaLLM
 
 # Model selection
 LOCAL_MODEL_NAME = "hf.co/bartowski/DeepSeek-R1-Distill-Qwen-14B-GGUF:Q6_K_L"
-DEFAULT_API_MODEL_NAME = "deepseek/deepseek-r1:free"
+# DEFAULT_API_MODEL_NAME = "deepseek/deepseek-r1:free"
+DEFAULT_API_MODEL_NAME = "deepseek/deepseek-r1"
 MISTRAL_MODEL_NAME = "mistralai/mistral-small-3.1-24b-instruct"
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")

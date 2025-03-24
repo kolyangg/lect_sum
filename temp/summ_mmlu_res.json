@@ -1,0 +1,9 @@
+{
+  "eval_summ_ans_DS_na.json": 65,
+  "eval_summ_ans_DS.json": 76,
+  "eval_summ_ans_local_DS.json": 70,
+  "eval_summ_ans_mistral_na.json": 65,
+  "eval_summ_ans_mistral.json": 73,
+  "eval_summ_ans_qwen_na.json": 56,
+  "eval_summ_ans_qwen.json": 73
+}

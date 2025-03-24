@@ -9,13 +9,15 @@ from langchain_ollama.llms import OllamaLLM
 
 # Model selection
 LOCAL_MODEL_NAME = "hf.co/bartowski/DeepSeek-R1-Distill-Qwen-14B-GGUF:Q6_K_L"
-API_MODEL_NAME = "deepseek/deepseek-r1:free"
+# API_MODEL_NAME = "deepseek/deepseek-r1:free"
+# API_MODEL_NAME = "qwen/qwen2.5-vl-72b-instruct:free"
+# API_MODEL_NAME = "mistralai/mistral-small-24b-instruct-2501:free"
+API_MODEL_NAME = "mistralai/mistral-small-24b-instruct-2501"
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
 # Lower temperature for more deterministic outputs
-# DETERMINISTIC_TEMPERATURE = 0.0
-DETERMINISTIC_TEMPERATURE = 15
+DETERMINISTIC_TEMPERATURE = 0.0 # 0.0
 
 def chat_with_model(user_input, chat_history, system_prompt):
     """
@@ -26,9 +28,11 @@ def chat_with_model(user_input, chat_history, system_prompt):
     # Initialize the model with a lower temperature.
     model = OllamaLLM(model=LOCAL_MODEL_NAME, temperature=DETERMINISTIC_TEMPERATURE)
     messages = [{"role": "system", "content": system_prompt}] + chat_history + [{"role": "user", "content": user_input}]
-    response = model.invoke({"messages": messages})
-    return response
+    # response = model.invoke({"messages": messages})
+    response = model.invoke(messages)
+    response = re.sub(r"<think>.*?</think>", "", response, flags=re.DOTALL).strip()
 
+    return response
 
 def chat_with_api(user_input, chat_history, system_prompt):
     """

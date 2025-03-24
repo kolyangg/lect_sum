@@ -9,6 +9,8 @@ from langchain_ollama.llms import OllamaLLM
 # Model selection
 LOCAL_MODEL_NAME = "hf.co/bartowski/DeepSeek-R1-Distill-Qwen-14B-GGUF:Q6_K_L"
 API_MODEL_NAME = "deepseek/deepseek-r1:free"
+# API_MODEL_NAME = "deepseek/deepseek-r1"
+
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 # Load API key from environment variable
